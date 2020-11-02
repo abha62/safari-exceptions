@@ -81,6 +81,14 @@ public class UseEither {
                 e.getFailure().getMessage());
           }
         })
+        // the map behavior takes the either (which might represent an error, or might not
+        // it calls e.recover...
+        // IF, but only if, e represents failure, then the recover method will invoke the
+        // supplied argument behavior.
+        // That behavior is a funciton from Throwable to Either<Throwable, Stream<String>>
+        // the recovery attempts to look for a file called backup...followed by the original
+        // filename. In this case, backupB.txt does exist, and we succeed in getting its
+        // contents.
         .map(e -> e.recover(Either.wrap(ex -> Files.lines(Paths.get("backup"+ex.getMessage())))))
         .filter(e -> e.isSuccess())
         .flatMap(e -> e.getSuccess())
