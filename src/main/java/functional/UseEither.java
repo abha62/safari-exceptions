@@ -81,7 +81,7 @@ public class UseEither {
                 e.getFailure().getMessage());
           }
         })
-        .map(e -> e.recover(Either.wrap(e -> Files.lines(Paths.get("D.txt")))))
+        .map(e -> e.recover(Either.wrap(ex -> Files.lines(Paths.get("backup"+ex.getMessage())))))
         .filter(e -> e.isSuccess())
         .flatMap(e -> e.getSuccess())
         .forEach(l -> System.out.println(l));
